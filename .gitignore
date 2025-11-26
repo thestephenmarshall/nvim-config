@@ -1,0 +1,10 @@
+# Neovim
+.DS_Store
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Plugin directories (managed by lazy.nvim)
+# Note: These are typically stored in ~/.local/share/nvim, not in this repo
+lazy-lock.json
