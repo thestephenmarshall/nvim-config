@@ -3,7 +3,51 @@ return {
     "nvim-telescope/telescope.nvim",
     keys = {
 
+      ------------------------------------------------------------------
+      -- OVERRIDE LazyVim FILE PICKERS (this is required)
+      ------------------------------------------------------------------
+
+      {
+        "<leader>ff",
+        function()
+          LazyVim.pick("files", {
+            hidden = true,
+          })()
+        end,
+        desc = "Find files (includes hidden)",
+      },
+
+      {
+        "<leader>fF",
+        function()
+          LazyVim.pick("files", {
+            hidden = true,
+            cwd = LazyVim.root(),
+          })()
+        end,
+        desc = "Find files in project root (includes hidden)",
+      },
+
+      ------------------------------------------------------------------
+      -- GLOBAL SEARCH (live_grep_args, includes hidden)
+      ------------------------------------------------------------------
+
+      {
+        "<leader>sG",
+        function()
+          require("telescope").extensions.live_grep_args.live_grep_args({
+            additional_args = function()
+              return { "--hidden", "--glob", "!.git/*" }
+            end,
+          })
+        end,
+        desc = "Global search (includes hidden files)",
+      },
+
+      ------------------------------------------------------------------
       -- MAIN SEARCH: prompt for filetype (empty = all)
+      ------------------------------------------------------------------
+
       {
         "<leader>sg",
         function()
@@ -11,11 +55,15 @@ return {
           local lga = require("telescope").extensions.live_grep_args
 
           if ft == "" then
-            lga.live_grep_args()
+            lga.live_grep_args({
+              additional_args = function()
+                return { "--hidden", "--glob", "!.git/*" }
+              end,
+            })
           else
             lga.live_grep_args({
               additional_args = function()
-                return { "-t", ft }
+                return { "--hidden", "--glob", "!.git/*", "-t", ft }
               end,
             })
           end
@@ -24,19 +72,28 @@ return {
         desc = "Search by text (optional filetype filter)",
       },
 
+      ------------------------------------------------------------------
       -- SEARCH WORD UNDER CURSOR
+      ------------------------------------------------------------------
+
       {
         "<leader>sw",
         function()
           local word = vim.fn.expand("<cword>")
           require("telescope").extensions.live_grep_args.live_grep_args({
             default_text = word,
+            additional_args = function()
+              return { "--hidden", "--glob", "!.git/*" }
+            end,
           })
         end,
         desc = "Search word under cursor",
       },
 
+      ------------------------------------------------------------------
       -- PICK FILETYPE FROM A DROPDOWN BEFORE SEARCHING
+      ------------------------------------------------------------------
+
       {
         "<leader>sF",
         function()
@@ -60,7 +117,7 @@ return {
             end
             require("telescope").extensions.live_grep_args.live_grep_args({
               additional_args = function()
-                return { "-t", ft }
+                return { "--hidden", "--glob", "!.git/*", "-t", ft }
               end,
             })
           end)
