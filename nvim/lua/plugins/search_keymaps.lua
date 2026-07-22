@@ -102,13 +102,14 @@ return {
             "javascript",
             "typescript",
             "tsx",
+            "jsx",
             "ruby",
             "python",
-            "go",
-            "rust",
             "json",
             "html",
             "css",
+            "scss",
+            "yaml",
           }
 
           vim.ui.select(filetypes, { prompt = "Choose filetype:" }, function(ft)

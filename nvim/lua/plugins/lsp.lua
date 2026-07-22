@@ -5,6 +5,7 @@ return {
       ruby_lsp = {
         mason = false,
         cmd = { vim.fn.expand("~/.asdf/shims/ruby-lsp") },
+        root_markers = { ".git" },
       },
       rubocop = {
         enabled = false,
